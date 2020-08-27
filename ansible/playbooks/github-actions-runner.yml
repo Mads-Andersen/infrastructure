@@ -1,0 +1,5 @@
+---
+- name: Install and configure Github Actions Runner
+  hosts: tag_Name_Github_Actions_Runner_01
+  roles:
+    - github-actions-runner

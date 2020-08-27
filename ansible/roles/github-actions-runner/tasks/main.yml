@@ -1,0 +1,24 @@
+---
+- name: Make Folder
+  shell: echo hej
+
+- name: Download actions-runner tar.gz
+  get_url:
+    url: https://github.com/actions/runner/releases/download/v2.273.0/actions-runner-linux-x64-2.273.0.tar.gz
+    dest: /tmp/actions-runner.tar.gz
+
+- name: Unarchive file
+  unarchive:
+    src: /tmp/actions-runner.tar.gz
+    dest: /home/admin/actions-runer
+    remote_src: yes
+
+- name: Configure
+  shell: config.sh --url https://github.com/Mads-Andersen/infrastructure --token AASJ3UKNVLAKDSHSGRQEQYS7I6OSC
+  args:
+    chdir: /home/admin/actions-runner
+
+- name: Run
+  shell: run.sh
+  args:
+    chdir: /home/admin/actions-runner
