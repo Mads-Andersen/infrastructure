@@ -1,24 +1,37 @@
 ---
-- name: Make Folder
-  shell: echo hej
+# Use this for inspiration
+# https://dev.to/wayofthepie/ephemeral-self-hosted-github-actions-runners-1h5m
 
-- name: Download actions-runner tar.gz
-  get_url:
-    url: https://github.com/actions/runner/releases/download/v2.273.0/actions-runner-linux-x64-2.273.0.tar.gz
-    dest: /tmp/actions-runner.tar.gz
+# - name: Download actions-runner tar.gz
+#   get_url:
+#     url: https://github.com/actions/runner/releases/download/v2.273.0/actions-runner-linux-x64-2.273.0.tar.gz
+#     dest: /tmp/actions-runner.tar.gz
 
-- name: Unarchive file
-  unarchive:
-    src: /tmp/actions-runner.tar.gz
-    dest: /home/admin/actions-runer
-    remote_src: yes
+# - name: Ensure directy exists
+#   file:
+#     path: /home/admin/actions-runner/
+#     state: directory
+
+# - name: Unarchive file
+#   unarchive:
+#     src: /tmp/actions-runner.tar.gz
+#     dest: /home/admin/actions-runner/
+#     remote_src: yes
+
+# - name: Install programs
+#   apt:
+#     name: "{{item}}"
+#     state: latest
+#   become: true
+#   loop:
+#     - python-pexpect
 
 - name: Configure
-  shell: config.sh --url https://github.com/Mads-Andersen/infrastructure --token AASJ3UKNVLAKDSHSGRQEQYS7I6OSC
+  shell: ./config.sh --url https://github.com/Mads-Andersen/infrastructure --token AASJ3UNS2C76DHAEHBX3EQ27I6YTU --name infrastructure-gitlab-runner --unattended --replace
   args:
-    chdir: /home/admin/actions-runner
+    chdir: /home/admin/actions-runner/
 
 - name: Run
-  shell: run.sh
+  shell: ./run.sh
   args:
-    chdir: /home/admin/actions-runner
+    chdir: /home/admin/actions-runner/
