@@ -1,0 +1,11 @@
+[Unit]
+Description=Github actions runner service
+
+[Service]
+User=admin
+Type=simple
+ExecStart=/home/admin/actions-runner/run.sh
+ExectStop=/usr/bin/pkill run.sh
+
+[Install]
+WantedBy=multi-user.target

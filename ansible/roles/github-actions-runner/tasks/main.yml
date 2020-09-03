@@ -18,20 +18,28 @@
 #     dest: /home/admin/actions-runner/
 #     remote_src: yes
 
-# - name: Install programs
-#   apt:
-#     name: "{{item}}"
-#     state: latest
-#   become: true
-#   loop:
-#     - python-pexpect
+# - name: Unconfigure
+#   shell: ./config.sh remove --token AASJ3UNS2C76DHAEHBX3EQ27I6YTU --name infrastructure-gitlab-runner
+#   args:
+#     chdir: /home/admin/actions-runner/
 
-- name: Configure
-  shell: ./config.sh --url https://github.com/Mads-Andersen/infrastructure --token AASJ3UNS2C76DHAEHBX3EQ27I6YTU --name infrastructure-gitlab-runner --unattended --replace
-  args:
-    chdir: /home/admin/actions-runner/
+# - name: Configure
+#   shell: ./config.sh --url https://github.com/Mads-Andersen/infrastructure --token AASJ3UNS2C76DHAEHBX3EQ27I6YTU --name infrastructure-gitlab-runner --unattended --replace
+#   args:
+#     chdir: /home/admin/actions-runner/
 
-- name: Run
-  shell: ./run.sh
-  args:
-    chdir: /home/admin/actions-runner/
+- name: Create service script
+  copy:
+    src: "{{ item.source }}"
+    dest: "{{ item.destination }}"
+    mode: '{{ item.mode }}'
+  become: true
+  loop:
+    - { source: 'github-actions-runner.service', destination: '/etc/systemd/system/github-actions-runner.service', mode: '0755' }
+
+- name: Enable and start service
+  service:
+    name: github-actions-runner
+    enabled: true
+    state: restarted
+  become: true

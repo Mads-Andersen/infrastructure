@@ -1,4 +1,7 @@
 ---
+- name: Install Base playbook
+  import_playbook: base.yml
+
 - name: Install and configure Github Actions Runner
   hosts: tag_Name_Github_Actions_Runner_01
   roles:

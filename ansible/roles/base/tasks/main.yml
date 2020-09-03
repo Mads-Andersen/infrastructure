@@ -1,0 +1,16 @@
+---
+- name: Install dependencies
+  raw: apt-get update && apt-get install -qqy python-apt
+  changed_when: false
+  become: true
+
+- name: Install tools
+  apt:
+    name: mtr,htop,iftop,tree,psmisc
+    state: latest
+  become: true
+
+- name: Set hostname to AWS Name tag
+  hostname:
+    name: "{{ec2_tag_Name}}"
+  become: true
